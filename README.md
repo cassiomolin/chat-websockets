@@ -1,5 +1,7 @@
 # Example of chat application with WebSockets
 
+[![MIT Licensed](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/cassiomolin/chat/master/LICENSE.txt)
+
 Example using:
 
 - **Undertow:** Servlet container
@@ -7,7 +9,7 @@ Example using:
 - **Jackson:** JSON parser for Java
 - **WebSockets:** Using the JSR-356 implementation provided by Undertow
 
-This example demonstrates a simple chat application with WebSockets. On server side, the WebSockets support is provided by Undertow (that implements the JSR 356) and on client side, the WebSockets support is provided by the HTML5 WebSockets API.
+This example demonstrates a simple chat application with WebSockets. On server side the WebSockets support is provided by Undertow (that implements the JSR 356) and on client side the WebSockets support is provided by the HTML5 WebSockets API.
 
 ## How to build and run this application?
 
@@ -24,6 +26,7 @@ Follow these steps to build and run this application:
 
 ## TODO
 
+- [ ] Add screenshots
 - [ ] Improve documentation with payload types
 - [ ] Improve documentation with authentication details
 - [ ] Write tests with Java WebSocket client API and Arquillian
