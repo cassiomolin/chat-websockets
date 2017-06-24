@@ -1,0 +1,361 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Chat</title>
+    <meta name="description" content="Chat">
+    <meta name="author" content="Cassio Mazzochi Molin">
+
+    <style>
+
+        /* Common */
+
+        * {
+            margin: 0;
+            padding: 0;
+            font-family: sans-serif;
+            font-size: 13px;
+            outline: 0;
+        }
+
+        .error {
+            color: #F04823;
+            font-size: 12px;
+        }
+
+        input[type="text"] {
+            border-radius: 20px;
+            padding: 10px;
+            border: 2px solid gainsboro;
+        }
+
+        button {
+            border-radius: 20px;
+            padding: 10px;
+            background-color: #0084FF;
+            color: #fff;
+            width: 6em;
+            border: 2px solid #0084FF;
+        }
+
+        button:hover,
+        button:focus {
+            background-color: #0966ff;
+            cursor: pointer;
+        }
+
+        /* Authentication */
+
+        #authentication {
+            margin-top: 100px;
+        }
+
+        #authentication * {
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            margin-bottom: 10px;
+        }
+
+        #authentication .error {
+            text-align: center;
+        }
+
+        /* Title Bar */
+
+        #title {
+            background-color: #0084FF;
+            font-size: 20px;
+            padding: 10px 20px 10px 20px;
+            color: #fff;
+        }
+
+        /* Contact list */
+
+        #contacts {
+            float: left;
+            width: 120px;
+            padding: 20px;
+            background-color: aliceblue;
+            min-height: calc(100vh - 85px);
+            max-height: calc(100vh - 85px);
+            display: none;
+        }
+
+        #contacts .contact .status {
+            background-color: #13CF13;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 10px;
+        }
+
+        #contacts .contact .name {
+            line-height: 40px;
+            vertical-align: super;
+        }
+
+        /* Chat */
+
+        #chat {
+            float: right;
+            width: calc(100% - 160px);
+            display: none;
+        }
+
+        #messages {
+            min-height: calc(100vh - 130px);
+            max-height: calc(100vh - 130px);
+            padding: 20px 20px 0 20px;
+            overflow-x: scroll;
+        }
+
+        #messages .message {
+            margin-bottom: 10px;
+        }
+
+        #messages .message .content {
+            min-width: 20px;
+            max-width: 250px;
+            border-radius: 20px;
+            padding: 10px;
+            display: table;
+        }
+
+        #messages .message.event .content {
+            background-color: #FF7E29;
+            color: #fff;
+            margin-left: auto;
+            margin-right: auto;
+            font-size: 10px;
+            padding: 7px;
+        }
+
+        #messages .message.received {
+            left: 0;
+            text-align: left;
+        }
+
+        #messages .message.received .content {
+            background-color: gainsboro;
+            border-radius: 0 20px 20px;
+        }
+
+        #messages .message.received .from {
+            color: dimgrey;
+            font-size: 10px;
+        }
+
+        #messages .message.sent {
+            right: 0;
+            text-align: right;
+        }
+
+        #messages .message.sent .content {
+            background-color: #0084FF;
+            margin-left: auto;
+            margin-right: 0;
+            color: #fff;
+            text-align: right;
+            border-radius: 20px 0 20px 20px;
+        }
+
+        #messages .message.sent .from {
+            color: #0084FF;
+            font-size: 10px;
+        }
+
+        #chat-controls {
+            height: 40px;
+            padding: 20px 20px 0 20px;
+        }
+
+        #chat-controls button {
+            float: right;
+        }
+
+        #chat-controls input[type="text"] {
+            width: calc(100% - 9em);
+        }
+    </style>
+
+</head>
+<body>
+
+<div id="title">Chat</div>
+
+<div id="authentication">
+    <input type="text" id="username" placeholder="Username"/>
+    <input type="text" id="password" placeholder="Password"/>
+    <button class="button" onclick="signIn()">Sign In</button>
+    <span class="error" id="authentication-error"></span>
+</div>
+
+<div id="contacts"></div>
+
+<div id="chat">
+    <div id="messages"></div>
+    <div id="chat-controls">
+        <input type="text" placeholder="Enter a message" id="message"/>
+        <button class="button" onclick="sendMessage()">Send</button>
+    </div>
+</div>
+
+<script>
+
+    var socket;
+    var currentUser;
+
+    function signIn() {
+
+        var username = document.getElementById("username").value;
+        var password = document.getElementById("password").value;
+
+        if (socket) {
+            socket.close();
+        }
+
+        socket = new WebSocket("ws://" + username + ":" + password + "@localhost:8080/chat");
+
+        socket.onopen = function (event) {
+            document.getElementById("authentication").style.display = "none";
+            document.getElementById("contacts").style.display = "block";
+            document.getElementById("chat").style.display = "block";
+            currentUser = username;
+        };
+
+        socket.onmessage = function (event) {
+
+            if (typeof event.data === "string") {
+
+                var webSocketMessage = JSON.parse(event.data);
+                switch (webSocketMessage.type) {
+
+                    case "textMessageReceived":
+                        displayMessage(webSocketMessage.payload.username, webSocketMessage.payload.content);
+                        break;
+
+                    case "userConnected":
+                        displayConnectedUserMessage(webSocketMessage.payload.username);
+                        break;
+
+                    case "userDisconnected":
+                        displayDisconnectedUserMessage(webSocketMessage.payload.username);
+                        break;
+
+                    case "usersAvailable":
+                        cleanAvailableContacts();
+                        for (var i = 0; i < webSocketMessage.payload.usernames.length; i++) {
+                            addAvailableContact(webSocketMessage.payload.usernames[i]);
+                        }
+                        break;
+                }
+            }
+        };
+
+        socket.onclose = function (event) {
+            if (!currentUser) {
+                document.getElementById("authentication-error").innerHTML = "Oops... Cannot establish a connection.<br>Check hostname, port and credentials.";
+            }
+        };
+    }
+
+    function sendMessage() {
+
+        var text = document.getElementById("message").value;
+        document.getElementById("message").value = "";
+
+        var payload = {};
+        payload.content = text;
+
+        var webSocketMessage = {};
+        webSocketMessage.type = "textMessageSent";
+        webSocketMessage.payload = payload;
+
+        socket.send(JSON.stringify(webSocketMessage));
+    }
+
+    function displayMessage(username, text) {
+
+        var sentByCurrentUer = currentUser === username;
+
+        var message = document.createElement("div");
+        message.setAttribute("class", sentByCurrentUer === true ? "message sent" : "message received");
+
+        var from = document.createElement("span");
+        from.setAttribute("class", "from");
+        from.appendChild(document.createTextNode(sentByCurrentUer === true ? "You" : username));
+        message.appendChild(from);
+
+        var content = document.createElement("span");
+        content.setAttribute("class", "content");
+        content.appendChild(document.createTextNode(text));
+        message.appendChild(content);
+
+        var messages = document.getElementById("messages");
+        messages.appendChild(message);
+        messages.scrollTop = messages.scrollHeight;
+    }
+
+    function displayConnectedUserMessage(username) {
+
+        var sentByCurrentUer = currentUser === username;
+
+        var message = document.createElement("div");
+        message.setAttribute("class", "message event");
+
+        var text = sentByCurrentUer === true ? "Welcome " + username : username + " joined the chat";
+        var content = document.createElement("span");
+        content.setAttribute("class", "content");
+        content.appendChild(document.createTextNode(text));
+        message.appendChild(content);
+
+        var messages = document.getElementById("messages");
+        messages.appendChild(message);
+    }
+
+    function displayDisconnectedUserMessage(username) {
+
+        var message = document.createElement("div");
+        message.setAttribute("class", "message event");
+
+        var text = username + " left the chat";
+        var content = document.createElement("span");
+        content.setAttribute("class", "content");
+        content.appendChild(document.createTextNode(text));
+        message.appendChild(content);
+
+        var messages = document.getElementById("messages");
+        messages.appendChild(message);
+    }
+
+    function addAvailableContact(username) {
+
+        var contact = document.createElement("div");
+        contact.setAttribute("class", "contact");
+
+        var status = document.createElement("div");
+        status.setAttribute("class", "status");
+        contact.appendChild(status);
+
+        var content = document.createElement("span");
+        content.setAttribute("class", "name");
+        content.appendChild(document.createTextNode(username));
+        contact.appendChild(content);
+
+        var contacts = document.getElementById("contacts");
+        contacts.appendChild(contact);
+    }
+
+    function cleanAvailableContacts() {
+        var contacts = document.getElementById("contacts");
+        while (contacts.hasChildNodes()) {
+            contacts.removeChild(contacts.lastChild);
+        }
+    }
+
+</script>
+
+</body>
+</html>
