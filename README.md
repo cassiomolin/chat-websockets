@@ -2,14 +2,17 @@
 
 [![MIT Licensed](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/cassiomolin/chat/master/LICENSE.txt)
 
-Example using:
+Chat example using:
 
 - **Undertow:** Servlet container
 - **Weld:** CDI reference implementation
 - **Jackson:** JSON parser for Java
 - **WebSockets:** Using the JSR 356 implementation provided by Undertow
 
-This example demonstrates a simple chat application with WebSockets. On server side the WebSockets support is provided by Undertow (that implements the JSR 356) and on client side the WebSockets support is provided by the HTML5 WebSockets API.
+This example demonstrates a simple chat with WebSockets:
+
+- On server side the WebSockets support is provided by Undertow (that implements the JSR 356).
+- On client side the WebSockets support is provided by the HTML5 WebSockets API.
 
 ## How to build and run this application?
 
