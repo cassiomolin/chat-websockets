@@ -27,9 +27,33 @@ Follow these steps to build and run this application:
 1. Execute the JAR: `java -jar chat-1.0.jar`.
 1. A page to test the application will be available at `http://localhost:8080/index.html`. The chat endpoint will be available at `http://localhost:8080/chat`.
 
+## Authentication overview
+
+The `/chat` endpoint is secured with HTTP Basic Authentication. 
+
+When the credentials are sent in the WebSocket URL, as following:
+
+```javascript
+var ws = new WebSocket("ws://username:password@example.com"); 
+```
+
+The browser sends `username:password` encoded as Base64 in the handshake request and the Basic Authentication is negotiated on the server:
+
+```
+Authorization: Basic dXNlcm5hbWU6cGFzc3dvcmQ=
+```
+
+The `AuthenticationFilter` filter extracts the credentials from the `AuthorizationHeader`, validates them and accepts or refuses the request.
+
+User credentials are hardcoded and only the following are accepted by the application:
+
+ Username | Password 
+--------- |----------
+ joe      | secret 
+ jane     | secret 
+ john     | secret 
+
+
 ## TODO
 
-- [ ] Add screenshots
-- [ ] Improve documentation with payload types
-- [ ] Improve documentation with authentication details
 - [ ] Write tests with Java WebSocket client API and Arquillian
