@@ -7,7 +7,7 @@ Example using:
 - **Undertow:** Servlet container
 - **Weld:** CDI reference implementation
 - **Jackson:** JSON parser for Java
-- **WebSockets:** Using the JSR-356 implementation provided by Undertow
+- **WebSockets:** Using the JSR 356 implementation provided by Undertow
 
 This example demonstrates a simple chat application with WebSockets. On server side the WebSockets support is provided by Undertow (that implements the JSR 356) and on client side the WebSockets support is provided by the HTML5 WebSockets API.
 
