@@ -30,7 +30,7 @@ The browser sends `username:password` encoded as Base64 in the handshake request
 Authorization: Basic dXNlcm5hbWU6cGFzc3dvcmQ=
 ```
 
-The `AuthenticationFilter` filter extracts the credentials from the `AuthorizationHeader`, validates them and accepts or refuses the request.
+The [`AuthenticationFilter`](src/main/java/com/cassiomolin/example/chat/security/AuthenticationFilter.java) filter extracts the credentials from the `Authorization` header, validates them and accepts or refuses the request.
 
 User credentials are hardcoded and only the following are accepted by the application:
 
