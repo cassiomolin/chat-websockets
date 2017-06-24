@@ -23,7 +23,8 @@
             font-size: 12px;
         }
 
-        input[type="text"] {
+        input[type="text"],
+        input[type="password"]{
             border-radius: 20px;
             padding: 10px;
             border: 2px solid gainsboro;
@@ -187,7 +188,7 @@
 
 <div id="authentication">
     <input type="text" id="username" placeholder="Username"/>
-    <input type="text" id="password" placeholder="Password"/>
+    <input type="password" id="password" placeholder="Password"/>
     <button class="button" onclick="signIn()">Sign In</button>
     <span class="error" id="authentication-error"></span>
 </div>
