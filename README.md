@@ -1,12 +1,14 @@
-# Example with Undertow, Weld, Jersey and WebSockets
+# Example of chat application with WebSockets
 
-Example application using:
+Example using:
 
 - **Undertow:** Servlet container
 - **Weld:** CDI reference implementation
 - **Jackson:** JSON parser for Java
 - **WebSockets:** Using the JSR-356 implementation provided by Undertow
-- 
+
+This example demonstrates a simple chat application with WebSockets. On server side, the WebSockets support is provided by Undertow (that implements the JSR 356) and on client side, the WebSockets support is provided by the HTML5 WebSockets API.
+
 ## How to build and run this application?
 
 Follow these steps to build and run this application:
@@ -22,5 +24,6 @@ Follow these steps to build and run this application:
 
 ## TODO
 
-- [ ] Improve documentation (write about payload types)
+- [ ] Improve documentation with payload types
+- [ ] Improve documentation with authentication details
 - [ ] Write tests with Java WebSocket client API and Arquillian
