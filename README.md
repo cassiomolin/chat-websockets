@@ -14,19 +14,6 @@ This example demonstrates a simple chat with WebSockets:
 - On server side the WebSockets support is provided by Undertow (that implements the JSR 356).
 - On client side the WebSockets support is provided by the HTML5 WebSockets API.
 
-## How to build and run this application?
-
-Follow these steps to build and run this application:
-
-1. Open a command line window or terminal.
-1. Navigate to the root directory of the project, where the `pom.xml` resides.
-1. Compile the project: `mvn clean compile`.
-1. Package the application: `mvn package`.
-1. Change into the `target` directory: `cd target`
-1. You should see a file with the following or a similar name: `chat-1.0.jar`.
-1. Execute the JAR: `java -jar chat-1.0.jar`.
-1. A page to test the application will be available at `http://localhost:8080/index.html`. The chat endpoint will be available at `http://localhost:8080/chat`.
-
 ## Authentication overview
 
 The `/chat` endpoint is secured with HTTP Basic Authentication. 
@@ -53,6 +40,29 @@ User credentials are hardcoded and only the following are accepted by the applic
  jane     | secret 
  john     | secret 
 
+## Building and running this application
+
+Follow these steps to build and run this application:
+
+1. Open a command line window or terminal.
+1. Navigate to the root directory of the project, where the `pom.xml` resides.
+1. Compile the project: `mvn clean compile`.
+1. Package the application: `mvn package`.
+1. Change into the `target` directory: `cd target`
+1. You should see a file with the following or a similar name: `chat-1.0.jar`.
+1. Execute the JAR: `java -jar chat-1.0.jar`.
+1. A page to test the application will be available at `http://localhost:8080/index.html`. The chat endpoint will be available at `http://localhost:8080/chat`.
+
+## Using the chat
+
+Browse to `http://localhost:8080/index.html` and authenticate using the credentials listed above:
+
+<img src="src/main/doc/screenshot-01.png" width="500">
+
+Once authenticated, the chat will be displayed and the online contacts will be seen on the left. Open multiple tabs/windows and authenticate with different users. Write a message and click _Send_:
+
+<img src="src/main/doc/screenshot-03.png" width="500">
+<img src="src/main/doc/screenshot-04.png" width="500">
 
 ## TODO
 
