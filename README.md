@@ -63,7 +63,3 @@ Once authenticated, the chat will be displayed and the online contacts will be s
 
 <img src="src/main/doc/screenshot-03.png" width="500">
 <img src="src/main/doc/screenshot-04.png" width="500">
-
-## TODO
-
-- [ ] Write tests with Java WebSocket client API and Arquillian
