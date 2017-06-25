@@ -113,7 +113,7 @@
         }
 
         #messages .message {
-            margin-bottom: 10px;
+            margin-bottom: 3px;
         }
 
         #messages .message .content {
@@ -143,7 +143,7 @@
             border-radius: 0 20px 20px;
         }
 
-        #messages .message.received .from {
+        #messages .message.received .sender {
             color: dimgrey;
             font-size: 10px;
         }
@@ -162,7 +162,7 @@
             border-radius: 20px 0 20px 20px;
         }
 
-        #messages .message.sent .from {
+        #messages .message.sent .sender {
             color: #0084FF;
             font-size: 10px;
         }
@@ -179,6 +179,16 @@
         #chat-controls input[type="text"] {
             width: calc(100% - 9em);
         }
+
+        #messages .message.sent.same-sender-previous-message .sender,
+        #messages .message.received.same-sender-previous-message .sender {
+            display: none;
+        }
+
+        #messages .message:not(.same-sender-previous-message) {
+            margin-top: 10px;
+        }
+
     </style>
 
 </head>
@@ -267,11 +277,14 @@
         var text = document.getElementById("message").value;
         document.getElementById("message").value = "";
 
-        var payload = {};
-        payload.content = text;
+        var payload = {
+            content: text
+        };
 
-        var webSocketMessage = {};
-        webSocketMessage.type = "textMessageSent";
+        var webSocketMessage = {
+            type: "textMessageSent"
+        };
+
         webSocketMessage.payload = payload;
 
         socket.send(JSON.stringify(webSocketMessage));
@@ -283,11 +296,12 @@
 
         var message = document.createElement("div");
         message.setAttribute("class", sentByCurrentUer === true ? "message sent" : "message received");
+        message.dataset.sender = username;
 
-        var from = document.createElement("span");
-        from.setAttribute("class", "from");
-        from.appendChild(document.createTextNode(sentByCurrentUer === true ? "You" : username));
-        message.appendChild(from);
+        var sender = document.createElement("span");
+        sender.setAttribute("class", "sender");
+        sender.appendChild(document.createTextNode(sentByCurrentUer === true ? "You" : username));
+        message.appendChild(sender);
 
         var content = document.createElement("span");
         content.setAttribute("class", "content");
@@ -295,6 +309,11 @@
         message.appendChild(content);
 
         var messages = document.getElementById("messages");
+        var lastMessage = messages.lastChild;
+        if (lastMessage && lastMessage.dataset.sender && lastMessage.dataset.sender === username) {
+            message.className += " same-sender-previous-message";
+        }
+
         messages.appendChild(message);
         messages.scrollTop = messages.scrollHeight;
     }
