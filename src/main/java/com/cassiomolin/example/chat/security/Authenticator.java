@@ -5,7 +5,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Created by cassiomolin on 22/06/2017.
+ * In-memory authenticator.
+ *
+ * @author cassiomolin
  */
 @ApplicationScoped
 public class Authenticator {

@@ -7,6 +7,11 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * Payload with details of the available users.
+ *
+ * @author cassiomolin
+ */
 public class UsersAvailablePayload implements Payload {
 
     public static final String TYPE = "usersAvailable";

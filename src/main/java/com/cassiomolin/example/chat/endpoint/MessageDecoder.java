@@ -9,7 +9,7 @@ import javax.websocket.EndpointConfig;
 import java.io.IOException;
 
 /**
- * Encoder for {@link WebSocketMessage}.
+ * Decoder for {@link WebSocketMessage}.
  *
  * @author cassiomolin
  */

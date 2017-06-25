@@ -3,6 +3,11 @@ package com.cassiomolin.example.chat.model.payload;
 
 import com.cassiomolin.example.chat.model.Payload;
 
+/**
+ * Payload with details of a connected user.
+ *
+ * @author cassiomolin
+ */
 public class UserConnectedPayload implements Payload {
 
     public static final String TYPE = "userConnected";

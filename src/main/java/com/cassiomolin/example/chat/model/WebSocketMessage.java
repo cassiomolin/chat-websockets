@@ -4,6 +4,11 @@ import com.cassiomolin.example.chat.model.payload.*;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
+/**
+ * WebSocket message. The <code>type<code/> field indicates the type of the <code>payload</code>.
+ *
+ * @author cassiomolin
+ */
 public class WebSocketMessage {
 
     private String type;

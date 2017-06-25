@@ -11,6 +11,11 @@ import java.io.IOException;
 import java.security.Principal;
 import java.util.Base64;
 
+/**
+ * Authentication filter for the chat endpoint. Only HTTP Basic Authentication is supported.
+ *
+ * @author cassiomolin
+ */
 @WebFilter("/chat/*")
 public class AuthenticationFilter implements Filter {
 
@@ -73,6 +78,11 @@ public class AuthenticationFilter implements Filter {
 
     }
 
+    /**
+     * Wrapper for a {@link HttpServletRequest} which sets the authenticated user.
+     *
+     * @author cassiomolin
+     */
     private static class AuthenticatedRequest extends HttpServletRequestWrapper {
 
         private String username;

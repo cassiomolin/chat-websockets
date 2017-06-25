@@ -3,6 +3,11 @@ package com.cassiomolin.example.chat.model.payload;
 
 import com.cassiomolin.example.chat.model.Payload;
 
+/**
+ * Payload with details of a message received by the client.
+ *
+ * @author cassiomolin
+ */
 public class TextMessageReceivedPayload implements Payload {
 
     public static final String TYPE = "textMessageReceived";

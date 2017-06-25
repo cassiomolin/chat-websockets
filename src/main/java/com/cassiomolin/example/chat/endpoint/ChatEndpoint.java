@@ -15,7 +15,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 /**
- * WebSocket endpoint to push {@link WebSocketMessage}s to the clients.
+ * WebSocket endpoint for the chat.
  *
  * @author cassiomolin
  */
