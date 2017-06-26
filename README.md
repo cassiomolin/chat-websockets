@@ -41,7 +41,9 @@ However, the [HTML5 WebSocket API][] doesn't allow the developer to send arbitra
 At the time of writing, looks like Chrome and Firefox can negotiate HTTP Basic Authentication with the server, when the credentials are sent in the WebSocket URL, as following:
 
 ```javascript
-var websocket = new WebSocket("ws://username:password@example.com"); 
+String username = ...
+String password = ...
+var websocket = new WebSocket("ws://" + username + ":" + password + "@localhost:8080"); 
 ```
 
 The browser will encode `username:password` as Base64 and will send it in the `Authorization` header of the handshake request. 
@@ -54,7 +56,7 @@ However looks like no other browsers support it.
 
 ### Token-Based Authentication
 
-Alternatively to HTTP Basic Authentication, short lived tokens (and valid only once) can be used to authenticate a WebSocket handshake. It's the approach used in this application.
+Alternatively to HTTP Basic Authentication, short lived tokens (and valid only once) can be used to authenticate a WebSocket handshake. It's the approach used in this application and require two steps.
 
 First the client exchanges their username and password for an access token:
 
@@ -77,24 +79,30 @@ request.onreadystatechange = function () {
 request.send(JSON.stringify(credentials));
 ```
 
-Then the client open a WebSocket connection sending the access token query string:
+Then the client open a WebSocket connection sending the access token in query string:
 
 ```js
 function openSocket(accessToken) {
-    var websocket = new WebSocket("ws://localhost:8080/chat?accessToken =" + accessToken); 
+    var websocket = new WebSocket("ws://localhost:8080/chat?accessToken=" + accessToken); 
     ...
 }
 ```
 
-The server ensures that the token valid just for a few seconds and cannot be reused.
+The server must ensure that the token is valid only for a short period of time and cannot be reused. 
 
-In this application, for example purposes, the user credentials are hardcoded and only the following are accepted by the application:
+On server side, the authentication and token validation are handled by the following classes:
 
- Username | Password 
---------- |----------
- joe      | secret 
- jane     | secret 
- john     | secret 
+- [`AccessTokenFilter`][AccessTokenFilter]
+- [`AuthenticationServlet`][AuthenticationServlet]
+- [`Authenticator`][Authenticator]
+
+For example purposes, the user credentials are hardcoded and only the following are accepted by the application:
+
+Username | Password 
+-------- | ----------
+joe      | secret 
+john     | secret 
+jane     | secret 
 
 ## Building and running this application
 
@@ -107,11 +115,13 @@ Follow these steps to build and run this application:
 1. Change into the `target` directory: `cd target`
 1. You should see a file with the following or a similar name: `chat-1.0.jar`.
 1. Execute the JAR: `java -jar chat-1.0.jar`.
-1. A page to test the application will be available at `http://localhost:8080/index.html`. The chat endpoint will be available at `http://localhost:8080/chat`.
+1. A page to test the application will be available at `http://localhost:8080`.
+   - The authentication endpoint will be available at `http://localhost:8080/auth`.
+   - The chat endpoint will be available at `ws://localhost:8080/chat`.
 
 ## Using the chat
 
-Browse to `http://localhost:8080/index.html` and authenticate using the credentials listed above:
+Browse to `http://localhost:8080` and authenticate using the credentials listed above:
 
 <img src="src/main/doc/authentication.png" width="500">
 
@@ -125,3 +135,6 @@ Once authenticated, the chat will be displayed and the online contacts will be s
 [Auth0 article]: https://auth0.com/blog/auth-with-socket-io/
 [HTML5 WebSocket API]: https://developer.mozilla.org/en-US/docs/Web/API/WebSocket
 [RFC 7617]: https://tools.ietf.org/html/rfc7617
+[AccessTokenFilter]: /src/main/java/com/cassiomolin/example/chat/security/AccessTokenFilter.java`
+[AuthenticationServlet]: /src/main/java/com/cassiomolin/example/chat/security/AuthenticationServlet.java
+[Authenticator]: /src/main/java/com/cassiomolin/example/chat/security/Authenticator.java
