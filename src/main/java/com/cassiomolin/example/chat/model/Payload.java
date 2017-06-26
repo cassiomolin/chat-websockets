@@ -3,7 +3,7 @@ package com.cassiomolin.example.chat.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
- * Interface that indicates a payload of a WebSocket message.
+ * Interface that must be implemented by classes that represents the payload of a {@link WebSocketMessage}.
  *
  * @author cassiomolin
  */

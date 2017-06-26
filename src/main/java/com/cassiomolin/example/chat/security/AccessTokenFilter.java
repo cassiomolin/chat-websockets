@@ -10,12 +10,12 @@ import java.io.IOException;
 import java.security.Principal;
 
 /**
- * Authentication filter for the chat endpoint. Only HTTP Basic Authentication is supported.
+ * Access token filter for the chat endpoint. Requests without are valid access token are refused with a <code>403</code>.
  *
  * @author cassiomolin
  */
 @WebFilter("/chat/*")
-public class AuthenticationFilter implements Filter {
+public class AccessTokenFilter implements Filter {
 
     @Inject
     private Authenticator authenticator;
@@ -55,7 +55,7 @@ public class AuthenticationFilter implements Filter {
     }
 
     /**
-     * Wrapper for a {@link HttpServletRequest} which sets the authenticated user.
+     * Wrapper for a {@link HttpServletRequest} which decorates a {@link HttpServletRequest} by adding a {@link Principal} to it.
      *
      * @author cassiomolin
      */

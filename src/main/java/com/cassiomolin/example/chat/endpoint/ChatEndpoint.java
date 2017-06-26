@@ -55,16 +55,6 @@ public class ChatEndpoint {
         broadcastAvailableUsers();
     }
 
-    private void broadcast(WebSocketMessage message) {
-        synchronized (sessions) {
-            sessions.forEach(session -> {
-                if (session.isOpen()) {
-                    session.getAsyncRemote().sendObject(message);
-                }
-            });
-        }
-    }
-
     private void broadcastUserConnected(String username) {
         UserConnectedPayload payload = new UserConnectedPayload();
         payload.setUsername(username);
@@ -95,5 +85,15 @@ public class ChatEndpoint {
         UsersAvailablePayload payload = new UsersAvailablePayload();
         payload.setUsernames(usernames);
         broadcast(new WebSocketMessage(payload));
+    }
+
+    private void broadcast(WebSocketMessage message) {
+        synchronized (sessions) {
+            sessions.forEach(session -> {
+                if (session.isOpen()) {
+                    session.getAsyncRemote().sendObject(message);
+                }
+            });
+        }
     }
 }
