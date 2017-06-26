@@ -14,30 +14,34 @@ import java.io.IOException;
 public class AuthenticationServlet extends HttpServlet {
 
     @Inject
+    private ObjectMapper mapper;
+
+    @Inject
     private Authenticator authenticator;
 
-    private ObjectMapper mapper = new ObjectMapper();
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         Credentials credentials = mapper.readValue(req.getReader(), Credentials.class);
-        if (authenticator.checkCredentials(credentials.getUsername(), credentials.getPassword())) {
 
-            String token = authenticator.issuesAccessToken(credentials.getUsername());
+        if (authenticator.checkCredentials(credentials.getUsername(), credentials.getPassword())) {
+            String token = authenticator.issueAccessToken(credentials.getUsername());
             resp.setStatus(HttpServletResponse.SC_OK);
             resp.setContentType("application/json");
-            mapper.writeValue(resp.getWriter(), new WebSocketToken(token));
-
+            mapper.writeValue(resp.getWriter(), new WebSocketAccessToken(token));
         } else {
-
             resp.setStatus(HttpServletResponse.SC_FORBIDDEN);
             resp.setContentType("text/plain");
             resp.getWriter().write("Invalid credentials");
-
         }
     }
 
+    /**
+     * Model that holds credentials for a user.
+     *
+     * @author cassiomolin
+     */
     private static class Credentials {
 
         private String username;
@@ -65,15 +69,18 @@ public class AuthenticationServlet extends HttpServlet {
         }
     }
 
-    private static class WebSocketToken {
+    /**
+     * Model that holds an access token for the WebSocket endpoints.
+     */
+    private static class WebSocketAccessToken {
 
         private String token;
 
-        public WebSocketToken() {
+        public WebSocketAccessToken() {
 
         }
 
-        public WebSocketToken(String token) {
+        public WebSocketAccessToken(String token) {
             this.token = token;
         }
 

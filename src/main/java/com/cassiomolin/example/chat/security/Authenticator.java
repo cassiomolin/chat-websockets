@@ -1,13 +1,16 @@
 package com.cassiomolin.example.chat.security;
 
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
 
+import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
-import java.time.ZonedDateTime;
-import java.util.Date;
+import java.math.BigInteger;
+import java.security.SecureRandom;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 
 /**
  * In-memory authenticator.
@@ -17,9 +20,11 @@ import java.util.Map;
 @ApplicationScoped
 public class Authenticator {
 
-    private static Map<String, String> users = new HashMap<>();
+    private SecureRandom random;
 
-    private static final String JWT_SIGNING_KEY = "secret";
+    private Cache<String, String> accessTokens;
+
+    private static Map<String, String> users = new HashMap<>();
 
     static {
         users.put("joe", "secret");
@@ -27,27 +32,35 @@ public class Authenticator {
         users.put("john", "secret");
     }
 
+    @PostConstruct
+    public void init() {
+        random = new SecureRandom();
+        accessTokens = CacheBuilder.newBuilder()
+                .expireAfterAccess(15, TimeUnit.SECONDS) // Entries expire in 15 seconds
+                .build();
+    }
+
     public boolean checkCredentials(String username, String password) {
         return users.containsKey(username) && users.get(username).equals(password);
     }
 
-    public String issuesAccessToken(String username) {
-        return Jwts.builder()
-                .setSubject(username)
-                .setExpiration(Date.from(ZonedDateTime.now().plusSeconds(30).toInstant()))
-                .signWith(SignatureAlgorithm.HS512, JWT_SIGNING_KEY)
-                .compact();
+    public String issueAccessToken(String username) {
+        String accessToken = generateRandomString();
+        accessTokens.put(accessToken, username);
+        return accessToken;
     }
 
-    public String validateAccessToken(String token) {
-        try {
-            return Jwts.parser()
-                    .setSigningKey(JWT_SIGNING_KEY)
-                    .parseClaimsJws(token)
-                    .getBody()
-                    .getSubject();
-        } catch (Exception e) {
-            throw new InvalidAccessTokenException(e.getMessage(), e);
+    public Optional<String> getUsernameFromToken(String accessToken) {
+        String username = accessTokens.getIfPresent(accessToken);
+        if (username == null) {
+            return Optional.empty();
+        } else {
+            accessTokens.invalidate(accessToken); // The token can be used only once
+            return Optional.of(username);
         }
+    }
+
+    private String generateRandomString() {
+        return new BigInteger(130, random).toString(32);
     }
 }

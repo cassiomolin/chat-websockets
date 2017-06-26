@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequestWrapper;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.security.Principal;
+import java.util.Optional;
 
 /**
  * Access token filter for the chat endpoint. Requests without are valid access token are refused with a <code>403</code>.
@@ -33,19 +34,19 @@ public class AccessTokenFilter implements Filter {
 
         String token = request.getParameter("token");
         if (token == null || token.trim().isEmpty()) {
-            forbidden(response, "An access token is required to connect");
+            returnForbiddenError(response, "An access token is required to connect");
             return;
         }
 
-        try {
-            String username = authenticator.validateAccessToken(token);
-            filterChain.doFilter(new AuthenticatedRequest(request, username), servletResponse);
-        } catch (Exception e) {
-            forbidden(response, e.getMessage());
+        Optional<String> optionalUsername = authenticator.getUsernameFromToken(token);
+        if (optionalUsername.isPresent()) {
+            filterChain.doFilter(new AuthenticatedRequest(request, optionalUsername.get()), servletResponse);
+        } else {
+            returnForbiddenError(response, "Invalid access token");
         }
     }
 
-    private void forbidden(HttpServletResponse response, String message) throws IOException {
+    private void returnForbiddenError(HttpServletResponse response, String message) throws IOException {
         response.sendError(HttpServletResponse.SC_FORBIDDEN, message);
     }
 

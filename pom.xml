@@ -16,7 +16,7 @@
         <weld.version>3.0.0.Final</weld.version>
         <el-api.version>3.0.0</el-api.version>
         <jackson.version>2.8.8</jackson.version>
-        <jjwt.version>0.7.0</jjwt.version>
+        <guava.version>22.0</guava.version>
     </properties>
 
     <dependencies>
@@ -53,11 +53,11 @@
             <version>${jackson.version}</version>
         </dependency>
 
-        <!-- JJWT -->
+        <!-- Guava -->
         <dependency>
-            <groupId>io.jsonwebtoken</groupId>
-            <artifactId>jjwt</artifactId>
-            <version>${jjwt.version}</version>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>${guava.version}</version>
         </dependency>
 
         <!-- Weld -->

@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
 /**
  * WebSocket message.
- *
+ * <p>
  * The <code>type<code/> field indicates the type of the <code>payload</code> field.
  *
  * @author cassiomolin

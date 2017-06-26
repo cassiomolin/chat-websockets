@@ -1,6 +1,7 @@
 package com.cassiomolin.example.chat.endpoint;
 
 import com.cassiomolin.example.chat.model.WebSocketMessage;
+import com.cassiomolin.example.chat.util.ObjectMapperFactory;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -15,7 +16,7 @@ import javax.websocket.EndpointConfig;
  */
 public class MessageEncoder implements Encoder.Text<WebSocketMessage> {
 
-    private final ObjectMapper mapper = new ObjectMapper();
+    private final ObjectMapper mapper = ObjectMapperFactory.get();
 
     @Override
     public void init(EndpointConfig ec) {
