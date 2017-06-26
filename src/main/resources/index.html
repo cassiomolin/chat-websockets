@@ -42,6 +42,7 @@
         button:hover,
         button:focus {
             background-color: #0966ff;
+            border-color: #0966ff;
             cursor: pointer;
         }
 
@@ -232,13 +233,22 @@
         request.onreadystatechange = function () {
 
             if (request.readyState === XMLHttpRequest.DONE) {
-                if (request.status === 200) {
-                    currentUser = credentials.username;
-                    var webSocketToken = JSON.parse(request.responseText);
-                    openSocket(webSocketToken.token);
-                } else {
-                    currentUser = null;
-                    document.getElementById("authentication-error").innerHTML = "Oops... These credentials are invalid.";
+
+                switch (request.status) {
+
+                    case 200:
+                        currentUser = credentials.username;
+                        var webSocketToken = JSON.parse(request.responseText);
+                        openSocket(webSocketToken.token);
+                        break;
+
+                    case 403:
+                        currentUser = null;
+                        document.getElementById("authentication-error").innerHTML = "Oops... These credentials are invalid.";
+                        break;
+
+                    default:
+                        document.getElementById("authentication-error").innerHTML = "Oops... Looks like something is broken.";
                 }
             }
         };
