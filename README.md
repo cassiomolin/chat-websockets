@@ -92,9 +92,9 @@ The server must ensure that the token is valid only for a short period of time a
 
 On server side, the authentication and token validation are handled by the following classes:
 
-- [`AccessTokenFilter`][AccessTokenFilter]
-- [`AuthenticationServlet`][AuthenticationServlet]
-- [`Authenticator`][Authenticator]
+- [`AuthenticationServlet`](src/main/java/com/cassiomolin/example/chat/security/AuthenticationServlet.java)
+- [`AccessTokenFilter`](src/main/java/com/cassiomolin/example/chat/security/AccessTokenFilter.java)
+- [`Authenticator`](src/main/java/com/cassiomolin/example/chat/security/Authenticator.java)
 
 For example purposes, the user credentials are hardcoded and only the following are accepted by the application:
 
@@ -135,6 +135,3 @@ Once authenticated, the chat will be displayed and the online contacts will be s
 [Auth0 article]: https://auth0.com/blog/auth-with-socket-io/
 [HTML5 WebSocket API]: https://developer.mozilla.org/en-US/docs/Web/API/WebSocket
 [RFC 7617]: https://tools.ietf.org/html/rfc7617
-[AccessTokenFilter]: /src/main/java/com/cassiomolin/example/chat/security/AccessTokenFilter.java`
-[AuthenticationServlet]: /src/main/java/com/cassiomolin/example/chat/security/AuthenticationServlet.java
-[Authenticator]: /src/main/java/com/cassiomolin/example/chat/security/Authenticator.java
