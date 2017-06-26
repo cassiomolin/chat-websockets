@@ -6,6 +6,8 @@
     <meta name="description" content="Chat">
     <meta name="author" content="Cassio Mazzochi Molin">
 
+    <link rel="icon" href="http://localhost:8080/favicon.ico?v=3"/>
+
     <style>
 
         /* Common */
@@ -238,8 +240,8 @@
 
                     case 200:
                         currentUser = credentials.username;
-                        var webSocketToken = JSON.parse(request.responseText);
-                        openSocket(webSocketToken.token);
+                        var webSocketAccessToken = JSON.parse(request.responseText);
+                        openSocket(webSocketAccessToken.token);
                         break;
 
                     case 403:
@@ -256,13 +258,13 @@
         request.send(JSON.stringify(credentials));
     }
 
-    function openSocket(token) {
+    function openSocket(accessToken) {
 
         if (socket) {
             socket.close();
         }
 
-        socket = new WebSocket("ws://localhost:8080/chat?token=" + token);
+        socket = new WebSocket("ws://localhost:8080/chat?access-token=" + accessToken);
 
         socket.onopen = function (event) {
             document.getElementById("authentication").style.display = "none";

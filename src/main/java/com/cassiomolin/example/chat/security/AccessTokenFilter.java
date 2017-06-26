@@ -32,7 +32,7 @@ public class AccessTokenFilter implements Filter {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
 
-        String token = request.getParameter("token");
+        String token = request.getParameter("access-token");
         if (token == null || token.trim().isEmpty()) {
             returnForbiddenError(response, "An access token is required to connect");
             return;
