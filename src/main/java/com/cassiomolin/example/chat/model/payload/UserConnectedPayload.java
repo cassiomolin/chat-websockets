@@ -14,6 +14,10 @@ public class UserConnectedPayload implements Payload {
 
     private String username;
 
+    public UserConnectedPayload() {
+
+    }
+
     public String getUsername() {
         return username;
     }

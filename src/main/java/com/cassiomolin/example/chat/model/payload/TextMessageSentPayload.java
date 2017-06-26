@@ -14,6 +14,10 @@ public class TextMessageSentPayload implements Payload {
 
     private String content;
 
+    public TextMessageSentPayload() {
+
+    }
+
     public String getContent() {
         return content;
     }

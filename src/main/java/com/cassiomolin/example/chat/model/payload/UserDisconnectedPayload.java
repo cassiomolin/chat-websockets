@@ -14,6 +14,10 @@ public class UserDisconnectedPayload implements Payload {
 
     private String username;
 
+    public UserDisconnectedPayload() {
+
+    }
+
     public String getUsername() {
         return username;
     }

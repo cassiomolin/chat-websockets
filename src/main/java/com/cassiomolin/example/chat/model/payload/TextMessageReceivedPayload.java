@@ -15,6 +15,10 @@ public class TextMessageReceivedPayload implements Payload {
     private String username;
     private String content;
 
+    public TextMessageReceivedPayload() {
+
+    }
+
     public String getContent() {
         return content;
     }

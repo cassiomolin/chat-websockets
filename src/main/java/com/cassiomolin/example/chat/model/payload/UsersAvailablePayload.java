@@ -16,6 +16,10 @@ public class UsersAvailablePayload implements Payload {
 
     private Set<String> usernames;
 
+    public UsersAvailablePayload() {
+
+    }
+
     public Set<String> getUsernames() {
         return usernames;
     }
