@@ -1,7 +1,7 @@
 package com.cassiomolin.example;
 
-import com.cassiomolin.example.chat.security.AuthenticationFilter;
 import com.cassiomolin.example.chat.endpoint.ChatEndpoint;
+import com.cassiomolin.example.chat.security.AuthenticationFilter;
 import com.cassiomolin.example.chat.security.AuthenticationServlet;
 import io.undertow.Handlers;
 import io.undertow.Undertow;
@@ -20,7 +20,6 @@ import javax.servlet.ServletException;
 import java.util.logging.Logger;
 
 import static io.undertow.servlet.Servlets.listener;
-import static io.undertow.servlet.Servlets.filter;
 
 /**
  * Application entry point.

@@ -8,7 +8,6 @@ import javax.servlet.http.HttpServletRequestWrapper;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.security.Principal;
-import java.util.Base64;
 
 /**
  * Authentication filter for the chat endpoint. Only HTTP Basic Authentication is supported.

@@ -2,9 +2,7 @@ package com.cassiomolin.example.chat.model.payload;
 
 
 import com.cassiomolin.example.chat.model.Payload;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import java.util.List;
 import java.util.Set;
 
 /**

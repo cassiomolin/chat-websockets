@@ -2,7 +2,6 @@ package com.cassiomolin.example.chat.security;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.SignatureException;
 
 import javax.enterprise.context.ApplicationScoped;
 import java.time.ZonedDateTime;

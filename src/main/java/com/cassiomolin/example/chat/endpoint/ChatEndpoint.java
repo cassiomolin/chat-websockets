@@ -1,7 +1,7 @@
 package com.cassiomolin.example.chat.endpoint;
 
 
-import com.cassiomolin.example.chat.model.*;
+import com.cassiomolin.example.chat.model.WebSocketMessage;
 import com.cassiomolin.example.chat.model.payload.*;
 
 import javax.enterprise.context.Dependent;
@@ -11,7 +11,9 @@ import javax.websocket.OnOpen;
 import javax.websocket.Session;
 import javax.websocket.server.ServerEndpoint;
 import java.security.Principal;
-import java.util.*;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
