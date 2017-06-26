@@ -71,8 +71,8 @@ public class Application {
                 .addWelcomePage("index.html")
                 .addListeners(listener(Listener.class))
                 .setResourceManager(new ClassPathResourceManager(Application.class.getClassLoader()))
-                .addFilter(new FilterInfo("authenticationFilter", AccessTokenFilter.class))
-                .addFilterUrlMapping("authenticationFilter", "/chat/*", DispatcherType.REQUEST)
+                .addFilter(new FilterInfo("accessTokenFilter", AccessTokenFilter.class))
+                .addFilterUrlMapping("accessTokenFilter", "/chat/*", DispatcherType.REQUEST)
                 .addServlet(Servlets.servlet("authenticationServlet", AuthenticationServlet.class).addMapping("/auth"))
                 .addServletContextAttribute(WebSocketDeploymentInfo.ATTRIBUTE_NAME,
                         new WebSocketDeploymentInfo()
