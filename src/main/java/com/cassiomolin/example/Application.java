@@ -2,6 +2,7 @@ package com.cassiomolin.example;
 
 import com.cassiomolin.example.chat.security.AuthenticationFilter;
 import com.cassiomolin.example.chat.endpoint.ChatEndpoint;
+import com.cassiomolin.example.chat.security.AuthenticationServlet;
 import io.undertow.Handlers;
 import io.undertow.Undertow;
 import io.undertow.server.DefaultByteBufferPool;
@@ -73,6 +74,7 @@ public class Application {
                 .setResourceManager(new ClassPathResourceManager(Application.class.getClassLoader()))
                 .addFilter(new FilterInfo("authenticationFilter", AuthenticationFilter.class))
                 .addFilterUrlMapping("authenticationFilter", "/chat/*", DispatcherType.REQUEST)
+                .addServlet(Servlets.servlet("authenticationServlet", AuthenticationServlet.class).addMapping("/auth"))
                 .addServletContextAttribute(WebSocketDeploymentInfo.ATTRIBUTE_NAME,
                         new WebSocketDeploymentInfo()
                                 .setBuffers(new DefaultByteBufferPool(true, 100))

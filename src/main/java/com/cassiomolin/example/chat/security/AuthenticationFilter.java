@@ -1,6 +1,5 @@
 package com.cassiomolin.example.chat.security;
 
-
 import javax.inject.Inject;
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
@@ -22,8 +21,6 @@ public class AuthenticationFilter implements Filter {
     @Inject
     private Authenticator authenticator;
 
-    private static final String REALM = "chat";
-
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
 
@@ -35,42 +32,22 @@ public class AuthenticationFilter implements Filter {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
 
-        String authorizationHeader = request.getHeader("Authorization");
-        if (authorizationHeader == null) {
-            unauthorized(response, "Authorization header not found");
+        String token = request.getParameter("token");
+        if (token == null || token.trim().isEmpty()) {
+            forbidden(response, "An access token is required to connect");
             return;
         }
 
-        String[] authenticationToken = authorizationHeader.split(" ");
-        if (authenticationToken.length != 2) {
-            unauthorized(response, "Invalid Authorization header");
-            return;
+        try {
+            String username = authenticator.validateAccessToken(token);
+            filterChain.doFilter(new AuthenticatedRequest(request, username), servletResponse);
+        } catch (Exception e) {
+            forbidden(response, e.getMessage());
         }
-
-        if (!"Basic".equalsIgnoreCase(authenticationToken[0])) {
-            unauthorized(response, "Unsupported authentication schema");
-            return;
-        }
-
-        String credentialsToken = new String(Base64.getDecoder().decode(authenticationToken[1]));
-        String[] credentials = credentialsToken.split(":");
-        if (credentials.length != 2) {
-            unauthorized(response, "Invalid credentials token");
-            return;
-        }
-
-        if (!authenticator.checkCredentials(credentials[0], credentials[1])) {
-            unauthorized(response, "Bad credentials");
-            return;
-        }
-
-        filterChain.doFilter(new AuthenticatedRequest(request, credentials[0]), servletResponse);
     }
 
-
-    private void unauthorized(HttpServletResponse response, String message) throws IOException {
-        response.setHeader("WWW-Authenticate", "Basic realm=\"" + REALM + "\"");
-        response.sendError(HttpServletResponse.SC_UNAUTHORIZED, message);
+    private void forbidden(HttpServletResponse response, String message) throws IOException {
+        response.sendError(HttpServletResponse.SC_FORBIDDEN, message);
     }
 
     @Override

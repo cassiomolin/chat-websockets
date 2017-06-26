@@ -220,20 +220,44 @@
 
     function signIn() {
 
-        var username = document.getElementById("username").value;
-        var password = document.getElementById("password").value;
+        var credentials = {
+            username: document.getElementById("username").value,
+            password: document.getElementById("password").value
+        };
+
+        var request = new XMLHttpRequest();
+        request.open("POST", "http://localhost:8080/auth");
+        request.setRequestHeader("Content-Type", "application/json");
+
+        request.onreadystatechange = function () {
+
+            if (request.readyState === XMLHttpRequest.DONE) {
+                if (request.status === 200) {
+                    currentUser = credentials.username;
+                    var webSocketToken = JSON.parse(request.responseText);
+                    openSocket(webSocketToken.token);
+                } else {
+                    currentUser = null;
+                    document.getElementById("authentication-error").innerHTML = "Oops... These credentials are invalid.";
+                }
+            }
+        };
+
+        request.send(JSON.stringify(credentials));
+    }
+
+    function openSocket(token) {
 
         if (socket) {
             socket.close();
         }
 
-        socket = new WebSocket("ws://" + username + ":" + password + "@localhost:8080/chat");
+        socket = new WebSocket("ws://localhost:8080/chat?token=" + token);
 
         socket.onopen = function (event) {
             document.getElementById("authentication").style.display = "none";
             document.getElementById("contacts").style.display = "block";
             document.getElementById("chat").style.display = "block";
-            currentUser = username;
         };
 
         socket.onmessage = function (event) {
@@ -262,12 +286,6 @@
                         }
                         break;
                 }
-            }
-        };
-
-        socket.onclose = function (event) {
-            if (!currentUser) {
-                document.getElementById("authentication-error").innerHTML = "Oops... Cannot establish a connection.<br>Check hostname, port and credentials.";
             }
         };
     }
