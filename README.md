@@ -38,7 +38,7 @@ One of the obvious choices to protect a WebSocket endpoint is the [HTTP Basic Au
 
 However, the [HTML5 WebSocket API][] doesn't allow the developer to send arbitrary headers in the handshake.
 
-At the time of writing, looks like Chrome and Firefox can negotiate HTTP Basic Authentication with the server, when the credentials are sent in the WebSocket URL, as following:
+At the time of writing, looks like only Chrome and Firefox can negotiate HTTP Basic Authentication with the server, when the credentials are sent in the WebSocket URL, as following:
 
 ```javascript
 String username = ...
@@ -46,13 +46,11 @@ String password = ...
 var websocket = new WebSocket("ws://" + username + ":" + password + "@localhost:8080"); 
 ```
 
-The browser will encode `username:password` as Base64 and will send it in the `Authorization` header of the handshake request. 
+The browser will encode `username:password` as Base64 and will send it in the `Authorization` header of the handshake request: 
 
 ```
 Authorization: Basic dXNlcm5hbWU6cGFzc3dvcmQ=
 ```
-
-However looks like no other browsers support it.
 
 ### Token-Based Authentication
 
@@ -116,8 +114,8 @@ Follow these steps to build and run this application:
 1. You should see a file with the following or a similar name: `chat-1.0.jar`.
 1. Execute the JAR: `java -jar chat-1.0.jar`.
 1. A page to test the application will be available at `http://localhost:8080`.
-   - The authentication endpoint will be available at `http://localhost:8080/auth`.
-   - The chat endpoint will be available at `ws://localhost:8080/chat`.
+   1. The authentication endpoint will be available at `http://localhost:8080/auth`.
+   1. The chat endpoint will be available at `ws://localhost:8080/chat`.
 
 ## Using the chat
 
