@@ -16,12 +16,14 @@ This example demonstrates a simple chat with WebSockets:
 
 ## WebSocket frames
 
-Once WebSocket frames can carry text or binary data without any headers, the application defines its own protocol to exchange messages between client and server. The frames are encoded as JSON, that looks like:
+Once WebSocket frames can carry text or binary data without any headers, the application defines its own protocol to exchange messages between client and server. The frames are encoded as JSON and look like:
 
 ```json
 {
   "type": "...",
-  "payload": { ... }
+  "payload": { 
+    
+  }
 }
 ```
 
