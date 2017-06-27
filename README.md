@@ -14,6 +14,19 @@ This example demonstrates a simple chat with WebSockets:
 - On server side the WebSockets support is provided by Undertow (that implements the JSR 356).
 - On client side the WebSockets support is provided by the HTML5 WebSockets API.
 
+## WebSocket frames
+
+Once WebSocket frames can carry text or binary data without any headers, the application defines its own protocol to exchange messages between client and server. The frames are encoded as JSON, that looks like:
+
+```json
+{
+  "type": "...",
+  "payload": { ... }
+}
+```
+
+The `type` property indicates the type of data that will be found in the `payload` property. For more details, refer to the [`WebSocketMessage`](src/main/java/com/cassiomolin/example/chat/model/WebSocketMessage.java) class.
+
 ## WebSocket authentication overview
 
 At protocol level, both HTTP and WS don't ensure any kind of security. HTTPS and WSS must be used instead. However, for demonstration purpose, this application uses HTTP and WS.
