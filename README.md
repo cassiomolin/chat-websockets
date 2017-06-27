@@ -28,8 +28,10 @@ According to the [RFC 6455][], the WebSockets protocol don't define any particul
 >   generic HTTP server, such as cookies, HTTP authentication, or TLS
 >   authentication.
 
-Bear in mind that HTTP and WebSockets are different channels of communication and it must be taken account when designing an authentication mechanist. See the quote below of an [article][Auth0 article] from the Auth0 blog:
+It's also important to bear in mind that HTTP and WebSockets are different channels of communication and it must be taken into account when designing an authentication mechanism. See the quote below of an [article][Auth0 article] from the Auth0 blog:
 
+> The socket server will not automagically know about the logged-in user, thus anyone could join any stream. [...]
+>
 > It is a common misconception that a user who is authenticated in the hosting web application, is also authenticated in the socket stream. These are two completely different channels.
 
 ### HTTP Basic Authentication
@@ -52,7 +54,9 @@ The browser will encode `username:password` as Base64 and will send it in the `A
 Authorization: Basic dXNlcm5hbWU6cGFzc3dvcmQ=
 ```
 
-### Token-Based Authentication
+While just a couple of browsers support it, we should consider another approach.
+
+### Short lived tokens
 
 Alternatively to HTTP Basic Authentication, short lived tokens (and valid only once) can be used to authenticate a WebSocket handshake. It's the approach used in this application and require two steps.
 
@@ -77,7 +81,7 @@ request.onreadystatechange = function () {
 request.send(JSON.stringify(credentials));
 ```
 
-Then the client open a WebSocket connection sending the access token in query string:
+Then the client opens a WebSocket connection sending the access token in query string to negotiate the authentication with the server:
 
 ```js
 function openSocket(accessToken) {
@@ -86,13 +90,15 @@ function openSocket(accessToken) {
 }
 ```
 
-The server must ensure that the token is valid only for a short period of time and cannot be reused. 
-
-On server side, the authentication and token validation are handled by the following classes:
+On server side, authentication and token validation are handled by the following classes:
 
 - [`AuthenticationServlet`](src/main/java/com/cassiomolin/example/chat/security/AuthenticationServlet.java)
 - [`AccessTokenFilter`](src/main/java/com/cassiomolin/example/chat/security/AccessTokenFilter.java)
 - [`Authenticator`](src/main/java/com/cassiomolin/example/chat/security/Authenticator.java)
+
+The server ensured that the token is valid for a short period of time and cannot be reused. 
+
+A similar approach is used by [Slack Real Time Messaging API][].
 
 For example purposes, the user credentials are hardcoded and only the following are accepted by the application:
 
@@ -133,3 +139,4 @@ Once authenticated, the chat will be displayed and the online contacts will be s
 [Auth0 article]: https://auth0.com/blog/auth-with-socket-io/
 [HTML5 WebSocket API]: https://developer.mozilla.org/en-US/docs/Web/API/WebSocket
 [RFC 7617]: https://tools.ietf.org/html/rfc7617
+[Slack Real Time Messaging API]: https://api.slack.com/methods/rtm.connect
