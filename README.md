@@ -90,15 +90,16 @@ function openSocket(accessToken) {
 }
 ```
 
-On server side, authentication and token validation are handled by the following classes:
+A similar approach is used by [Slack Real Time Messaging API][].
+
+
+The server ensures that the token is valid for a short period of time and cannot be reused. The following classes handle authentication and token validation on server side:
 
 - [`AuthenticationServlet`](src/main/java/com/cassiomolin/example/chat/security/AuthenticationServlet.java)
 - [`AccessTokenFilter`](src/main/java/com/cassiomolin/example/chat/security/AccessTokenFilter.java)
 - [`Authenticator`](src/main/java/com/cassiomolin/example/chat/security/Authenticator.java)
 
-The server ensured that the token is valid for a short period of time and cannot be reused. 
-
-A similar approach is used by [Slack Real Time Messaging API][].
+[`Authenticator`](src/main/java/com/cassiomolin/example/chat/security/Authenticator.java) relies on [Guava Cache][] to keep the track of the tokens and expire them after a few seconds.
 
 For example purposes, the user credentials are hardcoded and only the following are accepted by the application:
 
@@ -140,3 +141,4 @@ Once authenticated, the chat will be displayed and the online contacts will be s
 [HTML5 WebSocket API]: https://developer.mozilla.org/en-US/docs/Web/API/WebSocket
 [RFC 7617]: https://tools.ietf.org/html/rfc7617
 [Slack Real Time Messaging API]: https://api.slack.com/methods/rtm.connect
+[Guava Cache]: https://github.com/google/guava/wiki/CachesExplained
