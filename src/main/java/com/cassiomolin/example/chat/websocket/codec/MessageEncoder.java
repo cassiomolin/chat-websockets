@@ -1,4 +1,4 @@
-package com.cassiomolin.example.chat.endpoint;
+package com.cassiomolin.example.chat.websocket.codec;
 
 import com.cassiomolin.example.chat.model.WebSocketMessage;
 import com.cassiomolin.example.chat.util.ObjectMapperFactory;

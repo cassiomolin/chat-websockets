@@ -4,17 +4,17 @@ package com.cassiomolin.example.chat.model.payload;
 import com.cassiomolin.example.chat.model.Payload;
 
 /**
- * Payload with details of a connected user.
+ * Represents the payload of a WebSocket frame to broadcast details of a user who has connected to the chat.
  *
  * @author cassiomolin
  */
-public class UserConnectedPayload implements Payload {
+public class BroadcastConnectedUserPayload implements Payload {
 
-    public static final String TYPE = "userConnected";
+    public static final String TYPE = "broadcastConnectedUser";
 
     private String username;
 
-    public UserConnectedPayload() {
+    public BroadcastConnectedUserPayload() {
 
     }
 

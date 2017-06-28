@@ -197,21 +197,21 @@
 
 <div id="title">Chat</div>
 
-<div id="authentication">
-    <input type="text" id="username" placeholder="Username"/>
+<form id="authentication" onsubmit="return false;">
+    <input type="text" id="username" placeholder="Username" autofocus/>
     <input type="password" id="password" placeholder="Password"/>
     <button class="button" onclick="signIn()">Sign In</button>
     <span class="error" id="authentication-error"></span>
-</div>
+</form>
 
 <div id="contacts"></div>
 
 <div id="chat">
     <div id="messages"></div>
-    <div id="chat-controls">
-        <input type="text" placeholder="Enter a message" id="message"/>
+    <form id="chat-controls" onsubmit="return false;">
+        <input type="text" id="message" placeholder="Enter a message"/>
         <button class="button" onclick="sendMessage()">Send</button>
-    </div>
+    </form>
 </div>
 
 <script>
@@ -268,6 +268,7 @@
             document.getElementById("authentication").style.display = "none";
             document.getElementById("contacts").style.display = "block";
             document.getElementById("chat").style.display = "block";
+            document.getElementById("message").focus();
         };
 
         socket.onmessage = function (event) {
@@ -277,22 +278,26 @@
                 var webSocketMessage = JSON.parse(event.data);
                 switch (webSocketMessage.type) {
 
-                    case "textMessageReceived":
-                        displayMessage(webSocketMessage.payload.username, webSocketMessage.payload.content);
-                        break;
-
-                    case "userConnected":
+                    case "welcomeUser":
                         displayConnectedUserMessage(webSocketMessage.payload.username);
                         break;
 
-                    case "userDisconnected":
+                    case "broadcastTextMessage":
+                        displayMessage(webSocketMessage.payload.username, webSocketMessage.payload.content);
+                        break;
+
+                    case "broadcastConnectedUser":
+                        displayConnectedUserMessage(webSocketMessage.payload.username);
+                        break;
+
+                    case "broadcastDisconnectedUser":
                         displayDisconnectedUserMessage(webSocketMessage.payload.username);
                         break;
 
-                    case "usersAvailable":
-                        cleanAvailableContacts();
+                    case "broadcastAvailableUsers":
+                        cleanAvailableUsers();
                         for (var i = 0; i < webSocketMessage.payload.usernames.length; i++) {
-                            addAvailableContact(webSocketMessage.payload.usernames[i]);
+                            addAvailableUsers(webSocketMessage.payload.usernames[i]);
                         }
                         break;
                 }
@@ -310,7 +315,7 @@
         };
 
         var webSocketMessage = {
-            type: "textMessageSent"
+            type: "sendTextMessage"
         };
 
         webSocketMessage.payload = payload;
@@ -378,7 +383,7 @@
         messages.appendChild(message);
     }
 
-    function addAvailableContact(username) {
+    function addAvailableUsers(username) {
 
         var contact = document.createElement("div");
         contact.setAttribute("class", "contact");
@@ -396,7 +401,7 @@
         contacts.appendChild(contact);
     }
 
-    function cleanAvailableContacts() {
+    function cleanAvailableUsers() {
         var contacts = document.getElementById("contacts");
         while (contacts.hasChildNodes()) {
             contacts.removeChild(contacts.lastChild);

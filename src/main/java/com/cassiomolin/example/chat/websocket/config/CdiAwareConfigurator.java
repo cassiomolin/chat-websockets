@@ -1,4 +1,4 @@
-package com.cassiomolin.example.chat.endpoint;
+package com.cassiomolin.example.chat.websocket.config;
 
 import javax.enterprise.inject.spi.CDI;
 import javax.websocket.server.ServerEndpointConfig;

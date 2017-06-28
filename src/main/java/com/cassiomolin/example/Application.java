@@ -1,6 +1,6 @@
 package com.cassiomolin.example;
 
-import com.cassiomolin.example.chat.endpoint.ChatEndpoint;
+import com.cassiomolin.example.chat.websocket.ChatEndpoint;
 import com.cassiomolin.example.chat.security.AccessTokenFilter;
 import com.cassiomolin.example.chat.security.AuthenticationServlet;
 import io.undertow.Handlers;

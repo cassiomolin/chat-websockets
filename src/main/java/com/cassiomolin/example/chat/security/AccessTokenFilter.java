@@ -11,7 +11,7 @@ import java.security.Principal;
 import java.util.Optional;
 
 /**
- * Access token filter for the chat endpoint. Requests without are valid access token are refused with a <code>403</code>.
+ * Access token filter for the chat websocket. Requests without are valid access token are refused with a <code>403</code>.
  *
  * @author cassiomolin
  */

@@ -8,13 +8,13 @@ import com.cassiomolin.example.chat.model.Payload;
  *
  * @author cassiomolin
  */
-public class TextMessageSentPayload implements Payload {
+public class SendTextMessagePayload implements Payload {
 
-    public static final String TYPE = "textMessageSent";
+    public static final String TYPE = "sendTextMessage";
 
     private String content;
 
-    public TextMessageSentPayload() {
+    public SendTextMessagePayload() {
 
     }
 

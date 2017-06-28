@@ -21,11 +21,11 @@ public class WebSocketMessage {
             property = "type"
     )
     @JsonSubTypes({
-            @JsonSubTypes.Type(value = UserConnectedPayload.class, name = UserConnectedPayload.TYPE),
-            @JsonSubTypes.Type(value = UserDisconnectedPayload.class, name = UserDisconnectedPayload.TYPE),
-            @JsonSubTypes.Type(value = UsersAvailablePayload.class, name = UsersAvailablePayload.TYPE),
-            @JsonSubTypes.Type(value = TextMessageSentPayload.class, name = TextMessageSentPayload.TYPE),
-            @JsonSubTypes.Type(value = TextMessageReceivedPayload.class, name = TextMessageReceivedPayload.TYPE)
+            @JsonSubTypes.Type(value = BroadcastConnectedUserPayload.class, name = BroadcastConnectedUserPayload.TYPE),
+            @JsonSubTypes.Type(value = BroadcastDisconnectedUserPayload.class, name = BroadcastDisconnectedUserPayload.TYPE),
+            @JsonSubTypes.Type(value = BroadcastAvailableUsersPayload.class, name = BroadcastAvailableUsersPayload.TYPE),
+            @JsonSubTypes.Type(value = SendTextMessagePayload.class, name = SendTextMessagePayload.TYPE),
+            @JsonSubTypes.Type(value = BroadcastTextMessagePayload.class, name = BroadcastTextMessagePayload.TYPE)
     })
     private Payload payload;
 

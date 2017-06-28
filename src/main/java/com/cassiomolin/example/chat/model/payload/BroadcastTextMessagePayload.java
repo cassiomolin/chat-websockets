@@ -4,18 +4,18 @@ package com.cassiomolin.example.chat.model.payload;
 import com.cassiomolin.example.chat.model.Payload;
 
 /**
- * Payload with details of a message received by the client.
+ * Represents the payload of a WebSocket frame to broadcast a text message.
  *
  * @author cassiomolin
  */
-public class TextMessageReceivedPayload implements Payload {
+public class BroadcastTextMessagePayload implements Payload {
 
-    public static final String TYPE = "textMessageReceived";
+    public static final String TYPE = "broadcastTextMessage";
 
     private String username;
     private String content;
 
-    public TextMessageReceivedPayload() {
+    public BroadcastTextMessagePayload() {
 
     }
 
