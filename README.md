@@ -153,7 +153,7 @@ Browse to `http://localhost:8080` and authenticate using the credentials listed 
 
 <img src="src/main/doc/authentication.png" width="500">
 
-Once authenticated, the chat will be displayed and the online contacts will be seen on the left. Open multiple tabs/windows and authenticate with different users. Write a message and hit <kbd>Enter</kbd> or click _Send_ to send the message:
+Once authenticated, the chat will be displayed and the online contacts will be seen on the left. Open multiple tabs/windows and authenticate with different users. Write a message and hit <kbd>Enter</kbd> or click the _Send_ button to chat:
 
 <img src="src/main/doc/joe window.png" width="500">
 <img src="src/main/doc/jane window.png" width="500">
