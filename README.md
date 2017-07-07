@@ -4,10 +4,9 @@
 
 Chat example using:
 
-- **Undertow:** Servlet container.
+- **Undertow:** Servlet container that also provides WebSockets support (JSR 356 implementation).
 - **Weld:** CDI reference implementation.
 - **Jackson:** JSON parser for Java.
-- **WebSockets:** Using the JSR 356 implementation provided by Undertow.
 
 This example demonstrates a simple chat with WebSockets:
 
