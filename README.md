@@ -1,6 +1,6 @@
 # Example of chat application with WebSockets
 
-[![MIT Licensed](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/cassiomolin/chat/master/LICENSE.txt)
+[![MIT Licensed](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/cassiomolin/chat-websockets/master/LICENSE.txt)
 
 Chat example using:
 
