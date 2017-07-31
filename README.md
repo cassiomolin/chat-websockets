@@ -1,5 +1,6 @@
 # Example of chat application with WebSockets
 
+[![Build Status](https://travis-ci.org/cassiomolin/chat-websockets.svg?branch=master)](https://travis-ci.org/cassiomolin/chat-websockets)
 [![MIT Licensed](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/cassiomolin/chat-websockets/master/LICENSE.txt)
 
 Chat example using:
@@ -156,6 +157,11 @@ Once authenticated, the chat will be displayed and the online contacts will be s
 
 <img src="src/main/doc/joe window.png" width="500">
 <img src="src/main/doc/jane window.png" width="500">
+
+## Todo 
+
+- [ ] Write tests with Arquillian
+
 
 [RFC 6455]: https://tools.ietf.org/html/rfc6455
 [RFC 6455 10.5]: https://tools.ietf.org/html/rfc6455#section-10.5
